@@ -11,6 +11,7 @@ namespace AppBundle\Service;
 use AppBundle\Request\RedditArticleRequest;
 use AppBundle\Response\RedditArticleCollectionResponse;
 use AppBundle\Response\RedditArticleResponse;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 
 /**
@@ -25,9 +26,18 @@ class RedditService
 
     /**
      * RedditService constructor.
+     */
+    public function __construct()
+    {
+        // This is such a simple dependency, I'm not going to bother injecting it.
+        // Especially since we can easily hit production Reddit.
+        $this->http = new Client();
+    }
+
+    /**
      * @param ClientInterface $http
      */
-    public function __construct(ClientInterface $http)
+    public function setHttp(ClientInterface $http)
     {
         $this->http = $http;
     }

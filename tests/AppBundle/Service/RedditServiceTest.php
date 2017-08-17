@@ -15,15 +15,9 @@ class RedditServiceTest extends TestCase
      */
     private $service;
 
-    /**
-     * @var ClientInterface
-     */
-    private $http;
-
     protected function setUp()
     {
-        $this->http = new Client();
-        $this->service = new RedditService($this->http);
+        $this->service = new RedditService();
     }
 
     public function testGetArticles()
