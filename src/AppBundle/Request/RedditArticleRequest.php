@@ -38,6 +38,11 @@ class RedditArticleRequest
     private $after;
 
     /**
+     * @var string
+     */
+    private $query;
+
+    /**
      * @return string
      */
     public function getSubreddit()
@@ -120,6 +125,22 @@ class RedditArticleRequest
     /**
      * @return string
      */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
+     * @param string $query
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
+    }
+
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         $url = $this->baseUrl;
@@ -132,14 +153,25 @@ class RedditArticleRequest
             $url .= '/' . $this->type;
         }
 
+        if ($this->query) {
+            $url .= '/search';
+        }
+
         $url .= '/.json';
 
+        $query = '';
         if ($this->count && $this->after) {
-            $query = http_build_query(['count' => $this->count, 'after' => $this->after]);
-            $url .= '?' . $query;
+            $queryData = ['count' => $this->count, 'after' => $this->after];
         } elseif ($this->count && $this->before) {
-            $query = http_build_query(['count' => $this->count, 'before' => $this->before]);
-            $url .= '?' . $query;
+            $queryData = ['count' => $this->count, 'before' => $this->before];
+        }
+
+        if ($this->query) {
+            $queryData = ['q' => $this->query];
+        }
+
+        if (!empty($queryData)) {
+            $url .= '?' . http_build_query($queryData);
         }
 
         return $url;

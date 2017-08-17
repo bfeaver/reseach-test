@@ -56,4 +56,12 @@ class RedditArticleRequestTest extends TestCase
 
         $this->assertEquals('https://www.reddit.com/.json?count=26&before=abc123', $request->getUrl());
     }
+
+    public function testSearch()
+    {
+        $request = new RedditArticleRequest();
+        $request->setQuery('stuff');
+
+        $this->assertEquals('https://www.reddit.com/search/.json?q=stuff', $request->getUrl());
+    }
 }

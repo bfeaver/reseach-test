@@ -55,4 +55,21 @@ class DefaultController extends Controller
 
         return new JsonResponse($serializer->serialize($response, 'json'), 200, [], true);
     }
+
+    /**
+     * @Route("/api/search", name="api_search")
+     */
+    public function apiSearchAction(Request $request, RedditService $redditService, Serializer $serializer)
+    {
+        // Add validation if time permits
+        $redditRequest = new RedditArticleRequest();
+        $redditRequest->setQuery($request->query->get('q'));
+        $redditRequest->setCount($request->query->get('count'));
+        $redditRequest->setBefore($request->query->get('before'));
+        $redditRequest->setAfter($request->query->get('after'));
+
+        $response = $redditService->getArticles($redditRequest);
+
+        return new JsonResponse($serializer->serialize($response, 'json'), 200, [], true);
+    }
 }
