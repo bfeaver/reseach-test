@@ -33,6 +33,7 @@ class DefaultController extends Controller
         $redditRequest->setType($request->query->get('type'));
         $redditRequest->setSubreddit($request->query->get('subreddit'));
         $redditRequest->setCount($request->query->get('count'));
+        $redditRequest->setBefore($request->query->get('before'));
         $redditRequest->setAfter($request->query->get('after'));
 
         $response = $redditService->getArticles($redditRequest);

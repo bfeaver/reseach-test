@@ -55,6 +55,11 @@ class RedditService
 
         foreach ($json['data']['children'] as $article) {
             $data = $article['data'];
+
+            if (null === $list->getFirstArticleName()) {
+                $list->setFirstArticleName($data['name']);
+            }
+
             $list->addArticle(new RedditArticleResponse($data['title'], $data['url']));
             $list->setLastArticleName($data['name']);
         }

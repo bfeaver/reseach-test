@@ -15,6 +15,11 @@ class RedditArticleCollectionResponse
     /**
      * @var string
      */
+    private $firstArticleName;
+
+    /**
+     * @var string
+     */
     private $lastArticleName;
 
     /**
@@ -23,6 +28,22 @@ class RedditArticleCollectionResponse
     public function addArticle(RedditArticleResponse $response)
     {
         $this->collection[] = $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstArticleName()
+    {
+        return $this->firstArticleName;
+    }
+
+    /**
+     * @param string $firstArticleName
+     */
+    public function setFirstArticleName($firstArticleName)
+    {
+        $this->firstArticleName = $firstArticleName;
     }
 
     /**

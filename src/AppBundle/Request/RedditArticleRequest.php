@@ -30,6 +30,11 @@ class RedditArticleRequest
     /**
      * @var string
      */
+    private $before;
+
+    /**
+     * @var string
+     */
     private $after;
 
     /**
@@ -83,6 +88,22 @@ class RedditArticleRequest
     /**
      * @return string
      */
+    public function getBefore()
+    {
+        return $this->before;
+    }
+
+    /**
+     * @param string $before
+     */
+    public function setBefore($before)
+    {
+        $this->before = $before;
+    }
+
+    /**
+     * @return string
+     */
     public function getAfter()
     {
         return $this->after;
@@ -115,6 +136,9 @@ class RedditArticleRequest
 
         if ($this->count && $this->after) {
             $query = http_build_query(['count' => $this->count, 'after' => $this->after]);
+            $url .= '?' . $query;
+        } elseif ($this->count && $this->before) {
+            $query = http_build_query(['count' => $this->count, 'before' => $this->before]);
             $url .= '?' . $query;
         }
 
