@@ -47,21 +47,18 @@ class RedditService
      */
     public function getArticles(RedditArticleRequest $request)
     {
-        $response = $this->http->request('GET', $request->getUrl());
+        $url = $request->getUrl();
+        $response = $this->http->request('GET', $url);
 
         $json = \GuzzleHttp\json_decode((string)$response->getBody(), true);
 
         $list = new RedditArticleCollectionResponse();
+        $list->setFirstArticleName($json['data']['before']);
+        $list->setLastArticleName($json['data']['after']);
 
         foreach ($json['data']['children'] as $article) {
             $data = $article['data'];
-
-            if (null === $list->getFirstArticleName()) {
-                $list->setFirstArticleName($data['name']);
-            }
-
             $list->addArticle(new RedditArticleResponse($data['title'], $data['url']));
-            $list->setLastArticleName($data['name']);
         }
 
         return $list;

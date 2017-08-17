@@ -30,7 +30,7 @@ class RedditServiceTest extends TestCase
 
         $this->assertNotEmpty($articleResponse->getTitle());
         $this->assertNotEmpty($articleResponse->getLink());
-        $this->assertNotEmpty($response->getFirstArticleName());
+        $this->assertNull($response->getFirstArticleName());
         $this->assertNotEmpty($response->getLastArticleName());
     }
 }

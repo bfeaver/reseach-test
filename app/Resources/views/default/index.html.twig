@@ -6,6 +6,7 @@
         <table id="articleList" class="table">
             <tbody></tbody>
         </table>
+        <button id="prevButton" class="btn btn-xs btn-primary" disabled="disabled">Prev</button>
         <button id="nextButton" class="btn btn-xs btn-primary">Next</button>
     </div>
 {% endblock %}
@@ -17,14 +18,31 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script>
         var count = 25,
-            lastArticleName;
+            before,
+            after;
         $(function() {
             callApi('api');
         });
 
         $(document).on('click', '#nextButton', function () {
-            var uri = 'api' + '?count=' + count + '&after=' + lastArticleName;
+            var uri = 'api' + '?count=' + count + '&after=' + after;
             count += 25;
+
+            if (25 < count) {
+                $('#prevButton').prop('disabled', false);
+            }
+
+            callApi(uri);
+        });
+
+        $(document).on('click', '#prevButton', function () {
+            var uri = 'api' + '?count=' + (count - 24) + '&before=' + before;
+            count -= 25;
+
+            if (25 === count) {
+                $('#prevButton').prop('disabled', true);
+            }
+
             callApi(uri);
         });
 
@@ -37,7 +55,8 @@
                     var html = '<tr><td>' + '<a href="' + element.link + '"><b>' + element.title + '</b></a></td></tr>';
                     articleTable.append(html);
                 });
-                lastArticleName = data.last_article_name;
+                before = data.first_article_name;
+                after = data.last_article_name;
             });
         }
     </script>
