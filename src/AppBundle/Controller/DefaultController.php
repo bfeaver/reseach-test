@@ -30,8 +30,23 @@ class DefaultController extends Controller
     {
         // Add validation if time permits
         $redditRequest = new RedditArticleRequest();
-        $redditRequest->setType($request->query->get('type'));
-        $redditRequest->setSubreddit($request->query->get('subreddit'));
+        $redditRequest->setCount($request->query->get('count'));
+        $redditRequest->setBefore($request->query->get('before'));
+        $redditRequest->setAfter($request->query->get('after'));
+
+        $response = $redditService->getArticles($redditRequest);
+
+        return new JsonResponse($serializer->serialize($response, 'json'), 200, [], true);
+    }
+
+    /**
+     * @Route("/api/new", name="api_new")
+     */
+    public function apiNewAction(Request $request, RedditService $redditService, Serializer $serializer)
+    {
+        // Add validation if time permits
+        $redditRequest = new RedditArticleRequest();
+        $redditRequest->setType('new');
         $redditRequest->setCount($request->query->get('count'));
         $redditRequest->setBefore($request->query->get('before'));
         $redditRequest->setAfter($request->query->get('after'));
