@@ -159,7 +159,7 @@ class RedditArticleRequest
 
         $url .= '/.json';
 
-        $query = '';
+        $queryData = [];
         if ($this->count && $this->after) {
             $queryData = ['count' => $this->count, 'after' => $this->after];
         } elseif ($this->count && $this->before) {
@@ -167,7 +167,7 @@ class RedditArticleRequest
         }
 
         if ($this->query) {
-            $queryData = ['q' => $this->query];
+            $queryData += ['q' => $this->query];
         }
 
         if (!empty($queryData)) {

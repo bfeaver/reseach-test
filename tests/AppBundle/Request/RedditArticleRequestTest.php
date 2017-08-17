@@ -64,4 +64,14 @@ class RedditArticleRequestTest extends TestCase
 
         $this->assertEquals('https://www.reddit.com/search/.json?q=stuff', $request->getUrl());
     }
+
+    public function testSearchPagination()
+    {
+        $request = new RedditArticleRequest();
+        $request->setQuery('stuff');
+        $request->setCount(25);
+        $request->setAfter('abc123');
+
+        $this->assertEquals('https://www.reddit.com/search/.json?count=25&after=abc123&q=stuff', $request->getUrl());
+    }
 }
