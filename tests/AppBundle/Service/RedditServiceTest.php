@@ -1,6 +1,7 @@
 <?php
 namespace Tests\AppBundle\Service;
 
+use AppBundle\Request\RedditArticleRequest;
 use AppBundle\Response\RedditArticleResponse;
 use AppBundle\Service\RedditService;
 use GuzzleHttp\Client;
@@ -27,12 +28,14 @@ class RedditServiceTest extends TestCase
 
     public function testGetArticles()
     {
-        $response = $this->service->getArticles();
+        $request = new RedditArticleRequest();
+        $response = $this->service->getArticles($request);
 
         /** @var RedditArticleResponse $articleResponse */
         $articleResponse = $response->first();
 
         $this->assertNotEmpty($articleResponse->getTitle());
         $this->assertNotEmpty($articleResponse->getLink());
+        $this->assertNotEmpty($response->getLastArticleName());
     }
 }

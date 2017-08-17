@@ -8,6 +8,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Request\RedditArticleRequest;
 use AppBundle\Response\RedditArticleCollectionResponse;
 use AppBundle\Response\RedditArticleResponse;
 use GuzzleHttp\ClientInterface;
@@ -34,10 +35,9 @@ class RedditService
     /**
      * @return RedditArticleCollectionResponse
      */
-    public function getArticles()
+    public function getArticles(RedditArticleRequest $request)
     {
-        $baseUrl = 'https://www.reddit.com/.json';
-        $response = $this->http->request('GET', $baseUrl);
+        $response = $this->http->request('GET', $request->getUrl());
 
         $json = \GuzzleHttp\json_decode((string)$response->getBody(), true);
 
@@ -46,6 +46,7 @@ class RedditService
         foreach ($json['data']['children'] as $article) {
             $data = $article['data'];
             $list->addArticle(new RedditArticleResponse($data['title'], $data['url']));
+            $list->setLastArticleName($data['name']);
         }
 
         return $list;

@@ -13,11 +13,32 @@ class RedditArticleCollectionResponse
     private $collection = [];
 
     /**
+     * @var string
+     */
+    private $lastArticleName;
+
+    /**
      * @param RedditArticleResponse $response
      */
     public function addArticle(RedditArticleResponse $response)
     {
         $this->collection[] = $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastArticleName()
+    {
+        return $this->lastArticleName;
+    }
+
+    /**
+     * @param string $lastArticleName
+     */
+    public function setLastArticleName($lastArticleName)
+    {
+        $this->lastArticleName = $lastArticleName;
     }
 
     /**
