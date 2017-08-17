@@ -3,9 +3,10 @@
 {% block body %}
     <div class="container">
         <h1>Reddit-Style App</h1>
-        <table id="article_list" class="table">
+        <table id="articleList" class="table">
             <tbody></tbody>
         </table>
+        <button id="nextButton" class="btn btn-xs btn-primary">Next</button>
     </div>
 {% endblock %}
 
@@ -15,14 +16,29 @@
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script>
+        var count = 25,
+            lastArticleName;
         $(function() {
-            $.get('api', function (data) {
-                var articleTable = $('#article_list');
+            callApi('api');
+        });
+
+        $(document).on('click', '#nextButton', function () {
+            var uri = 'api' + '?count=' + count + '&after=' + lastArticleName;
+            count += 25;
+            callApi(uri);
+        });
+
+        function callApi(uri) {
+            $.get(uri, function (data) {
+                var articleTable = $('#articleList'),
+                    currentRows = $('#articleList tr');
+                currentRows.remove();
                 $.each(data.collection, function (index, element) {
                     var html = '<tr><td>' + '<a href="' + element.link + '"><b>' + element.title + '</b></a></td></tr>';
                     articleTable.append(html);
                 });
+                lastArticleName = data.last_article_name;
             });
-        });
+        }
     </script>
 {% endblock %}
